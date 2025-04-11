@@ -40,7 +40,7 @@
               environment = [
                 "FLASK_APP=${pkgs.python313}/bin/flask"
                 "FLASK_ENV=production"
-                "FLASK_RUN_PORT=${config.services.glance-minecraft-power.port}"
+                "FLASK_RUN_PORT=${toString config.services.glance-minecraft-power.port}"
                 "API_KEY_PATH=${config.services.glance-minecraft-power.apiKeyPath}"
               ];
             };
