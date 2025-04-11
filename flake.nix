@@ -1,5 +1,5 @@
 {
-  description = "Minecraft Server Control API";
+  description = "Glance Minecraft Power API";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
@@ -20,8 +20,8 @@
       nixosModules.default = { ... }: {
         imports = [ sops-nix.nixosModules.sops ];
 
-        systemd.services.minecraft-control-api = {
-          description = "Minecraft Server Control API";
+        systemd.services.glance-minecraft-power = {
+          description = "Glance Minecraft Power API";
           after = [ "network.target" ];
           wantedBy = [ "multi-user.target" ];
 
@@ -39,4 +39,3 @@
       };
     };
 }
-
