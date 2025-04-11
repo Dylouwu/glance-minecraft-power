@@ -12,6 +12,25 @@
         packages = with pkgs; [ python313 python313Packages.flask ];
       };
 
+      packages.x86_64-linux.glance-minecraft-power =
+        pkgs.python313Packages.buildPythonPackage {
+          pname = "glance-minecraft-power";
+          version = "1.0.0";
+
+          src = ./.;
+
+          nativeBuildInputs = [ pkgs.python313Packages.flake8 ];
+
+          dependencies = with pkgs.python313Packages; [ flask ];
+
+          meta = with pkgs.lib; {
+            description = "Glance Minecraft Power API";
+            license = licenses.mit;
+            maintainers = with maintainers; [ "Dylouwu" ];
+            platforms = [ "x86_64-linux" ];
+          };
+        };
+
       nixosModules.glance-minecraft-power = { config, lib, pkgs, ... }: {
         options.services.glance-minecraft-power = {
           enable =
@@ -48,7 +67,6 @@
                 }"
                 "API_KEY_PATH=${config.services.glance-minecraft-power.apiKeyPath}"
               ];
-              package = with pkgs; python313Packages.flask;
             };
           };
         };
