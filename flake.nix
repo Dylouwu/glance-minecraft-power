@@ -21,7 +21,7 @@
 
           nativeBuildInputs = [ pkgs.python313Packages.flake8 ];
 
-          dependencies = with pkgs.python313Packages; [ flask ];
+          propagatedBuildInputs = with pkgs.python313Packages; [ flask ];
 
           meta = with pkgs.lib; {
             description = "Glance Minecraft Power API";
