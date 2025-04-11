@@ -3,7 +3,7 @@
 
   inputs = { nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable"; };
 
-  outputs = { nixpkgs, sops-nix, ... }:
+  outputs = { nixpkgs, ... }:
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
@@ -20,10 +20,10 @@
             default = 5000;
             description = "Port for the Glance Minecraft Power API";
           };
-          apiKey = lib.mkOption {
+          apiKeyPath = lib.mkOption {
             type = lib.types.str;
             default = "";
-            description = "API key for the Glance Minecraft Power API";
+            description = "API key path for the Glance Minecraft Power API";
           };
         };
         config = lib.mkIf config.services.glance-minecraft-power.enable {
@@ -40,10 +40,8 @@
               environment = [
                 "FLASK_APP=${pkgs.python313}/bin/flask"
                 "FLASK_ENV=production"
-                "FLASK_RUN_PORT=${
-                  toString config.services.glance-minecraft-power.port
-                }"
-                "API_KEY=${config.services.glance-minecraft-power.apiKey}"
+                "FLASK_RUN_PORT=${config.services.glance-minecraft-power.port}"
+                "API_KEY_PATH=${config.services.glance-minecraft-power.apiKeyPath}"
               ];
             };
           };
