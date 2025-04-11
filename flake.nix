@@ -14,7 +14,7 @@
 
       nixosModules.glance-minecraft-power = { config, lib, pkgs, ... }: {
         options.services.glance-minecraft-power = {
-          enable = lib.mkOption "Enable the Glance Minecraft Power API service";
+          enable = lib.mkEnableOption "Enable the Glance Minecraft Power API service";
           port = lib.mkOption {
             type = lib.types.int;
             default = 5000;
