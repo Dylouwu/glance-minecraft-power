@@ -1,39 +1,51 @@
 {
   description = "Glance Minecraft Power API";
 
-  inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
-    sops-nix.url = "github:Mic92/sops-nix";
-    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
-  };
+  inputs = { nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable"; };
 
   outputs = { nixpkgs, sops-nix, ... }:
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
     in {
-      # Development shell
       devShells.${system}.default = pkgs.mkShell {
         packages = with pkgs; [ python313 python313Packages.flask sops ];
       };
 
-      nixosModules.default = { ... }: {
-        imports = [ sops-nix.nixosModules.sops ];
-
-        systemd.services.glance-minecraft-power = {
-          description = "Glance Minecraft Power API";
-          after = [ "network.target" ];
-          wantedBy = [ "multi-user.target" ];
-
-          environment = {
-            MINECRAFT_API_KEY = "${"secret:minecraft-api-key"}";
+      nixosModules.glance-minecraft-power = { config, lib, pkgs, ... }: {
+        options.services.glance-minecraft-power = {
+          enable = lib.mkOption "Enable the Glance Minecraft Power API service";
+          port = lib.mkOption {
+            type = lib.types.int;
+            default = 5000;
+            description = "Port for the Glance Minecraft Power API";
           };
+          apiKey = lib.mkOption {
+            type = lib.types.str;
+            default = "";
+            description = "API key for the Glance Minecraft Power API";
+          };
+        };
+        config = lib.mkIf config.services.glance-minecraft-power.enable {
+          systemd.services.glance-minecraft-power = {
+            description = "Glance Minecraft Power API";
+            after = [ "network.target" ];
+            wantedBy = [ "multi-user.target" ];
 
-          serviceConfig = {
-            ExecStart = "${pkgs.python3Packages.flask}/bin/python ${./app.py}";
-            User = "minecraft";
-            Group = "minecraft";
-            Restart = "on-failure";
+            serviceConfig = {
+              ExecStart = "${pkgs.python313}/bin/python ${./app.py}";
+              User = "minecraft";
+              Group = "minecraft";
+              Restart = "on-failure";
+              environment = [
+                "FLASK_APP=${pkgs.python313}/bin/flask"
+                "FLASK_ENV=production"
+                "FLASK_RUN_PORT=${
+                  toString config.services.glance-minecraft-power.port
+                }"
+                "API_KEY=${config.services.glance-minecraft-power.apiKey}"
+              ];
+            };
           };
         };
       };
