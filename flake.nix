@@ -9,12 +9,13 @@
       pkgs = import nixpkgs { inherit system; };
     in {
       devShells.${system}.default = pkgs.mkShell {
-        packages = with pkgs; [ python313 python313Packages.flask sops ];
+        packages = with pkgs; [ python313 python313Packages.flask ];
       };
 
       nixosModules.glance-minecraft-power = { config, lib, pkgs, ... }: {
         options.services.glance-minecraft-power = {
-          enable = lib.mkEnableOption "Enable the Glance Minecraft Power API service";
+          enable =
+            lib.mkEnableOption "Enable the Glance Minecraft Power API service";
           port = lib.mkOption {
             type = lib.types.int;
             default = 5000;
@@ -40,7 +41,9 @@
               environment = [
                 "FLASK_APP=${pkgs.python313}/bin/flask"
                 "FLASK_ENV=production"
-                "FLASK_RUN_PORT=${toString config.services.glance-minecraft-power.port}"
+                "FLASK_RUN_PORT=${
+                  toString config.services.glance-minecraft-power.port
+                }"
                 "API_KEY_PATH=${config.services.glance-minecraft-power.apiKeyPath}"
               ];
             };
