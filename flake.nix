@@ -49,6 +49,7 @@
                 }"
                 "API_KEY_PATH=${config.services.glance-minecraft-power.apiKeyPath}"
               ];
+              package = with pkgs; python313Packages.flask;
             };
           };
         };
