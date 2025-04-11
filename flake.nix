@@ -3,7 +3,7 @@
 
   inputs = { nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable"; };
 
-  outputs = { nixpkgs, ... }:
+  outputs = { self, nixpkgs, ... }:
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
@@ -53,9 +53,11 @@
             wantedBy = [ "multi-user.target" ];
 
             serviceConfig = {
-              ExecStart = ''
-                ${pkgs.python313}/bin/python ${./app.py}
-              '';
+
+              ExecStart = "${
+                  self.packages.${system}.glance-minecraft-power
+                }/bin/glance-minecraft-power";
+
               User = "minecraft";
               Group = "minecraft";
               Restart = "on-failure";
