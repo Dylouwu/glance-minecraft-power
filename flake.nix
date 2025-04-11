@@ -31,7 +31,7 @@
           };
         };
 
-      nixosModules.glance-minecraft-power = { config, lib, pkgs, ... }: {
+      nixosModules.glance-minecraft-power = { config, lib, ... }: {
         options.services.glance-minecraft-power = {
           enable =
             lib.mkEnableOption "Enable the Glance Minecraft Power API service";
@@ -62,8 +62,6 @@
               Group = "minecraft";
               Restart = "on-failure";
               environment = [
-                "FLASK_APP=${pkgs.python313}/bin/flask"
-                "FLASK_ENV=production"
                 "FLASK_RUN_PORT=${
                   toString config.services.glance-minecraft-power.port
                 }"

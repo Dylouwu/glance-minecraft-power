@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 setup(
     name="glance-minecraft-power",
     version="1.0.0",
-    packages=find_packages(),  # Ensure the package is discoverable
+    packages=find_packages(), 
     install_requires=["flask"],
     entry_points={
         "console_scripts": [
