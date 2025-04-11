@@ -42,7 +42,7 @@ def stop_server():
         return jsonify({"error": str(e)}), 500
 
 
-if __name__ == "__main__":
+def main():
     port = os.environ.get("FLASK_RUN_PORT")
     if port:
         port = int(port)  # Convert the port to an integer
@@ -51,4 +51,6 @@ if __name__ == "__main__":
 
     app.run(host="0.0.0.0", port=port)
 
-
+# Ensure script still runs when executed directly
+if __name__ == "__main__":
+    main()
