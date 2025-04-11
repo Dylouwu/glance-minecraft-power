@@ -6,9 +6,11 @@ app = Flask(__name__)
 
 # Get API key from environment variable (will be populated by the secret reference)
 API_KEY_PATH = os.environ.get("API_KEY_PATH")
+print(f"API_KEY_PATH: {API_KEY_PATH}")  # Debugging line to check the path
 if API_KEY_PATH:
     with open(API_KEY_PATH, "r") as file:
         API_KEY = file.read().strip()
+        print(f"API_KEY: {API_KEY}")
 
 # Middleware to check API key
 def check_api_key():
