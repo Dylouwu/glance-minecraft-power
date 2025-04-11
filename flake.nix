@@ -13,7 +13,7 @@
       };
 
       packages.x86_64-linux.glance-minecraft-power =
-        pkgs.python313Packages.buildPythonPackage {
+        pkgs.python313Packages.buildPythonApplication {
           pname = "glance-minecraft-power";
           version = "1.0.0";
 
