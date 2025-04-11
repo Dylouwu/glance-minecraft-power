@@ -22,8 +22,8 @@
             description = "Port for the Glance Minecraft Power API";
           };
           apiKeyPath = lib.mkOption {
-            type = lib.types.str;
-            default = "";
+            type = lib.types.path;
+            default = "/etc/minecraft/api-key.txt";
             description = "API key path for the Glance Minecraft Power API";
           };
         };
