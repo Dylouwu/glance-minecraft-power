@@ -34,7 +34,10 @@
             wantedBy = [ "multi-user.target" ];
 
             serviceConfig = {
-              ExecStart = "${pkgs.python313}/bin/python ${./app.py}";
+              ExecStart = ''
+                ${pkgs.python313}/bin/pip install flask
+                ${pkgs.python313}/bin/python ${./app.py}
+              '';
               User = "minecraft";
               Group = "minecraft";
               Restart = "on-failure";
