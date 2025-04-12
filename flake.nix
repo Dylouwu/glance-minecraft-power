@@ -61,7 +61,7 @@
               User = "minecraft";
               Group = "minecraft";
               Restart = "on-failure";
-              environment = [
+              Environment = [
                 "FLASK_RUN_PORT=${
                   toString config.services.glance-minecraft-power.port
                 }"
