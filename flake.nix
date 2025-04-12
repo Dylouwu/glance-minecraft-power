@@ -35,6 +35,16 @@
         options.services.glance-minecraft-power = {
           enable =
             lib.mkEnableOption "Enable the Glance Minecraft Power API service";
+          minecraftServerName = lib.mkOption {
+            type = lib.types.str;
+            default = "default";
+            description = "Name of the Minecraft server";
+          };
+          host = lib.mkOption {
+            type = lib.types.str;
+            default = "localhost";
+            description = "Host for the Glance Minecraft Power API";
+          };
           port = lib.mkOption {
             type = lib.types.int;
             default = 5000;
@@ -62,7 +72,9 @@
               Group = "minecraft";
               Restart = "on-failure";
               Environment = [
-                "FLASK_RUN_PORT=${
+                "MINECRAFT_SERVER_NAME=${config.services.glance-minecraft-power.minecraftServerName}"
+                "FLASK_HOST=${config.services.glance-minecraft-power.host}"
+                "FLASK_PORT=${
                   toString config.services.glance-minecraft-power.port
                 }"
                 "API_KEY_PATH=${config.services.glance-minecraft-power.apiKeyPath}"
