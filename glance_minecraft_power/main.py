@@ -20,7 +20,7 @@ def check_api_key():
     return None 
 
 
-@app.route("/api/server/start", methods=["POST"])
+@app.route("/mc/server/start", methods=["POST"])
 def start_server():
     auth_response = check_api_key()
     if auth_response:
@@ -33,7 +33,7 @@ def start_server():
         return jsonify({"error": str(e)}), 500
 
 
-@app.route("/api/server/stop", methods=["POST"])
+@app.route("/mc/server/stop", methods=["POST"])
 def stop_server():
     auth_response = check_api_key()
     if auth_response:
