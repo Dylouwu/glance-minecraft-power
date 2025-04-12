@@ -81,6 +81,17 @@
               ];
             };
           };
+          security.polkit.extraConfig = ''
+            polkit.addRule(function(action, subject) {
+              if (
+                action.id == "org.freedesktop.systemd1.manage-units" &&
+                subject.user == "minecraft" &&
+                action.lookup("unit") == "minecraft-server-${config.services.glance-minecraft-power.minecraftServerName}.service"
+              ) {
+                return polkit.Result.YES;
+              }
+            });
+          '';
         };
       };
     };
