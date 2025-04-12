@@ -26,7 +26,7 @@ def start_server():
         return auth_response
     
     try:
-        subprocess.run(["sudo", "systemctl", "start", "minecraft-server-paradisum.service"], check=True)
+        subprocess.run(["systemctl", "start", "minecraft-server-paradisum.service"], check=True)
         return jsonify({"status": "started"}), 200
     except subprocess.CalledProcessError as e:
         return jsonify({"error": str(e)}), 500
@@ -38,7 +38,7 @@ def stop_server():
         return auth_response
 
     try:
-        subprocess.run(["sudo", "systemctl", "stop", "minecraft-server-paradisum.service"], check=True)
+        subprocess.run(["systemctl", "stop", "minecraft-server-paradisum.service"], check=True)
         return jsonify({"status": "stopped"}), 200
     except subprocess.CalledProcessError as e:
         return jsonify({"error": str(e)}), 500
