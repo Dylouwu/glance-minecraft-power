@@ -4,7 +4,9 @@ import os
 
 app = Flask(__name__)
 
-MINECRAFT_SERVER_NAME = os.environ.get("MINECRAFT_SERVER_NAME")
+MINECRAFT_SERVER_NAME = os.environ.get("MINECRAFT_SERVER_NAME", "default")
+service_name = f"minecraft-server-{MINECRAFT_SERVER_NAME}.service"
+
 API_KEY_PATH = os.environ.get("API_KEY_PATH")
 if API_KEY_PATH:
     with open(API_KEY_PATH, "r") as file:
@@ -25,7 +27,7 @@ def start_server():
         return auth_response
     
     try:
-        subprocess.run(["systemctl", "start", "minecraft-server-${MINECRAFT_SERVER_NAME}.service"], check=True)
+        subprocess.run(["systemctl", "start", service_name], check=True)
         return jsonify({"status": "started"}), 200
     except subprocess.CalledProcessError as e:
         return jsonify({"error": str(e)}), 500
@@ -38,14 +40,14 @@ def stop_server():
         return auth_response
 
     try:
-        subprocess.run(["systemctl", "stop", "minecraft-server-${MINECRAFT_SERVER_NAME}.service"], check=True)
+        subprocess.run(["systemctl", "stop", service_name], check=True)
         return jsonify({"status": "stopped"}), 200
     except subprocess.CalledProcessError as e:
         return jsonify({"error": str(e)}), 500
 
 
 def main():
-    host = os.environ.get("FLASK_HOST")
+    host = os.environ.get("FLASK_HOST", "127.0.0.1")
     port = int(os.environ.get("FLASK_PORT", 5000))
     app.run(host=host, port=port)
 
